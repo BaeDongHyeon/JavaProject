@@ -1,0 +1,76 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+class Block extends JLabel {
+	private String[] imageName = {"없음", "default_block", "iron_block"};
+	private int block_num = 0;
+	private int floor = 0;
+	private int x = 0;
+	public Block(int block_num, int floor, int x) {
+		this.block_num = block_num;
+		this.floor = floor;
+		this.x = x;
+		if (block_num != 0) {
+			this.setIcon(MyImage.getImage("Block\\" + imageName[block_num], 30, 30));
+			setSize(30, 30);
+		}
+	}
+	public int getBlockNum() { return block_num; } 
+	public int getFloor() { return floor; } 
+	public int getXpoint() { return x; } 
+}
+
+class ballBouns extends JFrame {
+	private ArrayList<Block> l=new ArrayList<>();
+	private int[][] maps = {
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,1,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+	};
+	public ballBouns() {
+		Dimension myscreen = Toolkit.getDefaultToolkit().getScreenSize();		// 화면 해상도 가져오기
+		int myW = myscreen.width-100, myH = myscreen.height-100;
+		setSize(myW, myH);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);					// 가운데 배치
+		setResizable(false);							// 화면 크기 고정
+		setTitle("바운스 볼");
+		setLayout(null);
+		
+		int f = 0, x = 0;	
+		for (int i=0; i<maps.length; i++) {
+			for (int j=0; j<maps[i].length; j++) {
+				l.add(new Block(maps[i][j], f, x));
+				x++;
+			}
+			x = 0;
+			f++;
+		}
+		
+		for (int i=0; i<l.size(); i++) {
+			JLabel label = l.get(i);
+			int floor = l.get(i).getFloor();			// 현재 층 저장
+			int w = l.get(i).getXpoint();				// x값 저장
+			label.setLocation(w * 30, myH-100 - (maps.length - floor) * 30);
+			add(label);
+		}
+		setVisible(true);
+		
+	}
+}
+
+public class Test {
+	public static void main(String[] args) {
+		new ballBouns();
+	}
+}

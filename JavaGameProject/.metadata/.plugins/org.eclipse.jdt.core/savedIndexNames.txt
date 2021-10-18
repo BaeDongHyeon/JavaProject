@@ -1,0 +1,2 @@
+INDEX VERSION 1.131+C:\Users\sasd7\Documents\Java\JavaGameProject\.metadata\.plugins\org.eclipse.jdt.core
+2959673496.index

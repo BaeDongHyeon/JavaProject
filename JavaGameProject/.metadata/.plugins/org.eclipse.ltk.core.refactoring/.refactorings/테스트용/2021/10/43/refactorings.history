@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;graphics2D&apos; in &apos;테스트용.Test.test()&apos; to &apos;g2&apos;&#x0D;&#x0A;- Original project: &apos;테스트용&apos;&#x0D;&#x0A;- Original element: &apos;테스트용.Test.test().graphics2D&apos;&#x0D;&#x0A;- Renamed element: &apos;graphics2D&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;graphics2D&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;테스트용{Test.java[Test~test@graphics2D!1003!1057!1014!1023!QGraphics2D;!0!false" name="g2" references="true" stamp="1634458152098" version="1.0"/>
+</session>
