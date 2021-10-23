@@ -42,8 +42,6 @@ public class MainMenu extends JFrame implements ActionListener {
 		if (e.getSource() == b1) {
 			remove(p1);
 			repaint();
-		} else if (e.getSource() == b2) {
-			System.out.println("아직 아무 이벤트 없음");
 		}
 	}
 }
