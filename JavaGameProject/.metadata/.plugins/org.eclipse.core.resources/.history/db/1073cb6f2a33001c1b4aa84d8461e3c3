@@ -1,0 +1,9 @@
+package Utils;
+
+public class MyPoint<T> {
+	public T x,y;
+	public MyPoint(T x, T y) {
+		this.x = x;
+		this.y = y;
+	}
+}

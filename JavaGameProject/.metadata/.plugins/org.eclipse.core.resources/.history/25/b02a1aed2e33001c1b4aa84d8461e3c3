@@ -1,0 +1,11 @@
+package Utils;
+
+import javax.swing.JButton;
+
+public class MyButton extends JButton {
+	public MyButton() {
+		setBorderPainted(false);		// 버튼 테두리 설정
+		setContentAreaFilled(false);	// 버튼 영역 배경 표시 설정
+		setFocusPainted(false);		// 포커스 표시 설정
+	}
+}

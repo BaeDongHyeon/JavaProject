@@ -1,0 +1,42 @@
+package Utils;
+
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+public class MyFrame extends JFrame {
+	private Image introBackground, screenImage;
+	private Graphics screenGraphic;
+	private int width = 0, height = 0;
+	JButton b = new JButton("asdf");
+	
+	public MyFrame(String title, String ImageName, int width, int height) {
+		this.width = width;
+		this.height = height;
+		setSize(width, height);							// 크기
+		setTitle(title);								// 제목
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// 프로세스 종료
+		setLayout(null);								// 레이아웃 삭제
+		setLocationRelativeTo(null);					 // 가운데 배치
+		setResizable(false); 							// 화면 크기 고정
+		setVisible(true);
+		introBackground = MyImage.getImage(ImageName, width-8, height-8).getImage();		// background에 이미지 넣기
+		b.setBounds(10,10,100,100);
+		add(b);
+	}
+	
+	public void paint(Graphics g) {
+		screenImage = createImage(width, height);
+		screenGraphic = screenImage.getGraphics();
+		screenDraw(screenGraphic);
+		g.drawImage(introBackground, 0, 0, null);									// Image 그리기
+	}
+	
+	public void screenDraw(Graphics g) {
+		g.drawImage(introBackground, 120, 0, null);
+		paintComponents(g);
+		this.repaint();
+	}
+}
