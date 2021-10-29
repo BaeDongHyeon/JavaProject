@@ -1,5 +1,0 @@
-package BAB;
-
-public class Ball {
-	private String[] imageName = {"¾øÀ½", "default_block", "iron_block"};
-}

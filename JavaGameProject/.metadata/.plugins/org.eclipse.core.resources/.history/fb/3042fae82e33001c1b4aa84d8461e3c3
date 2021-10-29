@@ -1,9 +1,0 @@
-package Utils;
-
-import javax.swing.JButton;
-
-public class MyButton extends JButton {
-	public MyButton() {
-		
-	}
-}
