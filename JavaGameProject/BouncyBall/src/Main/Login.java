@@ -1,21 +1,28 @@
 package Main;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
 import Utils.MyPanel;
+import Utils.MyTextField;
 
-public class Login extends JFrame implements ActionListener, FocusListener {
-	private JButton b1, b2, b3;
+public class Login extends JFrame implements ActionListener {
+	private final int BTN_SIZE = 5;
+	private final int TXT_SIZE = 6;
+	private JButton[] b = new JButton[BTN_SIZE];
+	private JPasswordField[] t = new JPasswordField[TXT_SIZE];
+	private String[] btn_name = {"Login", "Sign Up", "Close", "Insert", "Go Login"};
+	private String[] txt_name = {"ID", "PW", "NickName", "ID", "PW", "PW Check"};
+	private JPanel login_all, sign_all;
 	
 	public Login() {
 		setSize(500, 500);
@@ -23,60 +30,65 @@ public class Login extends JFrame implements ActionListener, FocusListener {
 		setResizable(false);								// 화면 크기 조정 잠금
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel all=new MyPanel("login_background", 485, 460);
-		all.setLayout(null);
+		login_all=new MyPanel("login_background", 485, 460); login_all.setLayout(null);
+		sign_all=new JPanel(); sign_all.setLayout(null);
+		sign_all.setBackground(new Color(189, 215, 238));
 		
-		JPanel p1=new JPanel(new GridLayout(0, 1, 0, 10));	p1.setOpaque(false);
-		p1.setBounds(40, 170, 400, 60);
+		JPanel login_p1=new JPanel(new GridLayout(0, 1, 0, 10)); login_p1.setOpaque(false);
+		JPanel login_p2=new JPanel(new GridLayout(0, 1, 0, 10)); login_p2.setOpaque(false);
+		JPanel sign_p1 = new JPanel(new GridLayout(0, 1, 0, 50)); sign_p1.setOpaque(false);
+		JPanel sign_p2 = new JPanel(new GridLayout(1, 0, 10, 0)); sign_p2.setOpaque(false);
+		login_p1.setBounds(40, 170, 400, 60);
+		login_p2.setBounds(40, 250, 400, 180);
+		sign_p1.setBounds(30, 60, 430, 300);
+		sign_p2.setBounds(145, 400, 200, 40);
 		
-		JPasswordField t1=new JPasswordField(20); t1.addFocusListener(this); t1.setName("ID"); t1.setOpaque(false);		// 패스워드필드 생성, 포커스 리스너 지정, 컴포넌트 이름 지정, 불투명도 false
-		JPasswordField t2=new JPasswordField(20);	t2.addFocusListener(this); t2.setName("PW"); t2.setOpaque(false);	
-		t1.setEchoChar((char)0); t2.setEchoChar((char)0);				// 문자 암호화 해제
-		t1.setText(" " + t1.getName());		// 기본 텍스트값 지정
-		t2.setText(" " + t2.getName());
-		p1.add(t1); p1.add(t2);
+		JLabel label = new JLabel("회원가입");
+		label.setFont(new Font(null, Font.BOLD, 28));
+		label.setOpaque(false);
+		label.setBounds(30, 20, 200, 40);
+		sign_all.add(label);
 		
-		JPanel p2=new JPanel(new GridLayout(0, 1, 0, 10));
-		p2.setBounds(40, 250, 400, 180);
-		p2.setOpaque(false);
-		b1 = new JButton("Login");	b1.addActionListener(this);
-		b2 = new JButton("Sign Up"); b2.addActionListener(this);
-		b3 = new JButton("Cancel"); b3.addActionListener(this);
-		p2.add(b1); p2.add(b2); p2.add(b3);
+		for (int i=0; i<TXT_SIZE; i++) {
+			t[i] = new MyTextField(20, txt_name[i]);
+			
+			if (i < 2) login_p1.add(t[i]);		// 로그인 텍스트
+			else sign_p1.add(t[i]);				// 회원가입 텍스트
+		}
+		
+		for (int i=0; i<BTN_SIZE; i++) {
+			b[i] = new JButton(btn_name[i]);
+			b[i].addActionListener(this);
+			
+			if (i < 3) login_p2.add(b[i]);		// 로그인 버튼
+			else sign_p2.add(b[i]);				// 회원가입 버튼
+		}
 
-		all.add(p1); all.add(p2);
+		login_all.add(login_p1); login_all.add(login_p2);
+		sign_all.add(sign_p1); sign_all.add(sign_p2);
 		
-		add(all);
+		add(login_all);
 		setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == b1) {
+		if (e.getSource() == b[0]) {			// 로그인
 			
-		} else if (e.getSource() == b2) {
-			
-		} else if (e.getSource() == b3) {
+		} else if (e.getSource() == b[1]) {		// Sign Up
+			pageChange(login_all, sign_all);
+		} else if (e.getSource() == b[2]) {		// Cancel
 			System.exit(0);
+		} else if (e.getSource() == b[3]) {		// Insert
+			
+		} else if (e.getSource() == b[4]) {		// Go Login
+			pageChange(sign_all, login_all);
 		}
 	}
-
-	public void focusGained(FocusEvent e) {
-		JPasswordField text = (JPasswordField) e.getSource();		// JPasswordField형태로 getSource 받기
-		text.setBackground(new Color(79, 167, 255));				// 포커스를 얻으면 배경색 바꾸기
-		text.setOpaque(true);										// 불투명도 true
-		if (String.valueOf(text.getPassword()).equals(" " + text.getName())) {	// 기본 텍스트 값이 있으면
-			text.setText("");													// 빈칸으로 만들기
-			if (text.getName().equals("PW")) text.setEchoChar('●');				// 컴포넌트 이름이 PW이면 비밀번호 암호화 실행
-		}
-	}
-
-	public void focusLost(FocusEvent e) {
-		JPasswordField text = (JPasswordField) e.getSource();		// JPasswordField형태로 getSource 받기
-		text.setBackground(new Color(0, 0, 0));						// 포커스 얻으면 배경색 없애기
-		text.setOpaque(false);										// 불투명도 false
-		if (String.valueOf(text.getPassword()).equals("")) {					// 텍스트 박스가 비어 있으면
-			text.setText(" " + text.getName());									// 기본 텍스트 값으로 변경
-			if (text.getName().equals("PW")) text.setEchoChar((char)0);			// 컴포넌트 이름이 PW이면 비밀번호 암호화 해제
-		} 
+	
+	public void pageChange(JPanel prev, JPanel next) {
+		remove(prev);					// 이전 패널 제거
+		getContentPane().add(next);		// 다음 패널 붙이기
+		revalidate();					// 새로고침
+		repaint();						// 새로고침
 	}
 }
