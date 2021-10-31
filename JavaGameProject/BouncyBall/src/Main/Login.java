@@ -5,17 +5,23 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.border.LineBorder;
 
+import DB.DB;
 import Utils.MyPanel;
 import Utils.MyTextField;
 
 public class Login extends JFrame implements ActionListener {
+	private DB db=new DB();	// DB 연결 시도
 	private final int BTN_SIZE = 5;
 	private final int TXT_SIZE = 6;
 	private JButton[] b = new JButton[BTN_SIZE];
@@ -73,7 +79,28 @@ public class Login extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == b[0]) {			// 로그인
-			
+			try {
+				ResultSet rs=DB.stmt.executeQuery("SELECT * FROM user_info where ID = '" + String.valueOf(t[0].getPassword()) + "';");
+				rs.next();
+				
+				if (rs.getRow() == 0) {
+					JOptionPane.showMessageDialog(this, "존재하지 않는 아이디 입니다.");
+					t[0].setBorder(new LineBorder(Color.red, 2));
+				} else {
+					if (rs.getString("PW").equals(String.valueOf(t[1].getPassword()))) {
+						JOptionPane.showMessageDialog(this, rs.getString("NickName") + "님 환영합니다.");
+						// 로그인이 성공하면 게임화면으로 넘어가도록
+						this.dispose();
+						new MainMenu("Bouncy Ball", 1400, 800);
+					} else {
+						JOptionPane.showMessageDialog(this, "비밀번호가 틀립니다.");
+						t[1].setBorder(new LineBorder(Color.red, 2));
+					}
+				}
+				rs.close(); 		// 항상 사용 후 닫아주는게 원칙
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		} else if (e.getSource() == b[1]) {		// Sign Up
 			pageChange(login_all, sign_all);
 		} else if (e.getSource() == b[2]) {		// Cancel

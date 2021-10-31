@@ -1,5 +1,6 @@
 package Main;
 import java.awt.event.ActionEvent;
+import Maps.MapView;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -34,7 +35,8 @@ public class MainMenu extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 		new Login();
-		//new MainMenu("Bouncy Ball", 1400, 800);
+//		new MainMenu("Bouncy Ball", 1400, 800);
+//		new MapView();
 	}
 
 	public void actionPerformed(ActionEvent e) {

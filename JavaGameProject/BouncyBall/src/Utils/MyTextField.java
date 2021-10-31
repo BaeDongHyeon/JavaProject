@@ -20,6 +20,7 @@ public class MyTextField extends JPasswordField implements FocusListener {
 
 	public void focusGained(FocusEvent e) {
 		JPasswordField text = (JPasswordField) e.getSource();		// JPasswordField형태로 getSource 받기
+		text.setBorder(new LineBorder(new Color(0, 0, 0)));			// 포커스 얻으면 테두리 검은색으로
 		text.setBackground(new Color(79, 167, 255));				// 포커스를 얻으면 배경색 바꾸기
 		text.setOpaque(true);										// 불투명도 true
 		if (String.valueOf(text.getPassword()).equals(" " + text.getName())) {	// 기본 텍스트 값이 있으면
@@ -30,7 +31,7 @@ public class MyTextField extends JPasswordField implements FocusListener {
 
 	public void focusLost(FocusEvent e) {
 		JPasswordField text = (JPasswordField) e.getSource();		// JPasswordField형태로 getSource 받기
-		text.setBackground(new Color(0, 0, 0));						// 포커스 얻으면 배경색 없애기
+		text.setBackground(new Color(0, 0, 0));						// 포커스 잃으면 배경색 없애기
 		text.setOpaque(false);										// 불투명도 false
 		if (String.valueOf(text.getPassword()).equals("")) {					// 텍스트 박스가 비어 있으면
 			text.setText(" " + text.getName());									// 기본 텍스트 값으로 변경
