@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,19 +20,24 @@ import Utils.MyPanel;
 import Utils.MyTextField;
 
 public class Login extends JFrame implements ActionListener {
-	private DB db=new DB();	// DB ¿¬°á ½Ãµµ
+	private DB db=new DB();	// DB ì—°ê²° ì‹œë„
 	private final int BTN_SIZE = 5;
-	private final int TXT_SIZE = 6;
+	private static final int TXT_SIZE = 7;
+	private static final int LBL_SIZE = 5;
 	private JButton[] b = new JButton[BTN_SIZE];
-	private JPasswordField[] t = new JPasswordField[TXT_SIZE];
-	private String[] btn_name = {"Login", "Sign Up", "Close", "Insert", "Go Login"};
-	private String[] txt_name = {"ID", "PW", "NickName", "ID", "PW", "PW Check"};
+	private static JPasswordField[] t = new JPasswordField[TXT_SIZE];
+	private String[] btn_name = {"Login", "Sign Up", "close", "Insert", "Go Login"};
+	private String[] txt_name = {"ID", "PW", "NickName", "Phone", "ID", "PW", "PW Check"};
+	private static String[] lbl_name = {"ë‹‰ë„¤ì„ ì‚¬ìš© ê°€ëŠ¥ : ", "ì „í™”ë²ˆí˜¸('-' ì—†ìŒ) ì‚¬ìš© ê°€ëŠ¥ : ", "ì•„ì´ë”” ì‚¬ìš© ê°€ëŠ¥ : ", "ë¹„ë°€ë²ˆí˜¸(5ì ì´ìƒ) ì‚¬ìš© ê°€ëŠ¥ : ", "ë¹„ë°€ë²ˆí˜¸ ì¼ì¹˜ : "};
 	private JPanel login_all, sign_all;
+	private static JLabel[] l = new JLabel[LBL_SIZE];
+	private static boolean[] l_check = {false, false, false, false, false};
+	// staticì´ ë¶™ì€ ë³€ìˆ˜ë“¤ì€ ëª¨ë‘ MyTextFieldì—ì„œ ì‚¬ìš©í•˜ê¸° ìœ„í•¨
 	
 	public Login() {
 		setSize(500, 500);
-		setLocationRelativeTo(null);						// Ã³À½¿¡ È­¸éÀ» °¡¿îµ¥¿¡ ³ªÅ¸³»±â
-		setResizable(false);								// È­¸é Å©±â Á¶Á¤ Àá±İ
+		setLocationRelativeTo(null);						// ì²˜ìŒì— í™”ë©´ì„ ê°€ìš´ë°ì— ë‚˜íƒ€ë‚´ê¸°
+		setResizable(false);								// í™”ë©´ í¬ê¸° ì¡°ì • ì ê¸ˆ
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		login_all=new MyPanel("login_background", 485, 460); login_all.setLayout(null);
@@ -42,14 +46,16 @@ public class Login extends JFrame implements ActionListener {
 		
 		JPanel login_p1=new JPanel(new GridLayout(0, 1, 0, 10)); login_p1.setOpaque(false);
 		JPanel login_p2=new JPanel(new GridLayout(0, 1, 0, 10)); login_p2.setOpaque(false);
-		JPanel sign_p1 = new JPanel(new GridLayout(0, 1, 0, 50)); sign_p1.setOpaque(false);
+		JPanel sign_p1 = new JPanel(new GridLayout(0, 1, 0, 30)); sign_p1.setOpaque(false);
 		JPanel sign_p2 = new JPanel(new GridLayout(1, 0, 10, 0)); sign_p2.setOpaque(false);
+		JPanel sign_p3 = new JPanel(new GridLayout(0, 1, 0, 30)); sign_p3.setOpaque(false);
 		login_p1.setBounds(40, 170, 400, 60);
 		login_p2.setBounds(40, 250, 400, 180);
 		sign_p1.setBounds(30, 60, 430, 300);
 		sign_p2.setBounds(145, 400, 200, 40);
+		sign_p3.setBounds(30, 85, 430, 300);
 		
-		JLabel label = new JLabel("È¸¿ø°¡ÀÔ");
+		JLabel label = new JLabel("íšŒì›ê°€ì…");
 		label.setFont(new Font(null, Font.BOLD, 28));
 		label.setOpaque(false);
 		label.setBounds(30, 20, 200, 40);
@@ -58,46 +64,51 @@ public class Login extends JFrame implements ActionListener {
 		for (int i=0; i<TXT_SIZE; i++) {
 			t[i] = new MyTextField(20, txt_name[i]);
 			
-			if (i < 2) login_p1.add(t[i]);		// ·Î±×ÀÎ ÅØ½ºÆ®
-			else sign_p1.add(t[i]);				// È¸¿ø°¡ÀÔ ÅØ½ºÆ®
+			if (i < 2) login_p1.add(t[i]);		// ë¡œê·¸ì¸ í…ìŠ¤íŠ¸
+			else sign_p1.add(t[i]);				// íšŒì›ê°€ì… í…ìŠ¤íŠ¸
 		}
 		
 		for (int i=0; i<BTN_SIZE; i++) {
 			b[i] = new JButton(btn_name[i]);
 			b[i].addActionListener(this);
 			
-			if (i < 3) login_p2.add(b[i]);		// ·Î±×ÀÎ ¹öÆ°
-			else sign_p2.add(b[i]);				// È¸¿ø°¡ÀÔ ¹öÆ°
+			if (i < 3) login_p2.add(b[i]);		// ë¡œê·¸ì¸ ë²„íŠ¼
+			else sign_p2.add(b[i]);				// íšŒì›ê°€ì… ë²„íŠ¼
+		}
+		
+		for (int i=0; i<LBL_SIZE; i++) {
+			l[i] = new JLabel(lbl_name[i] + l_check[i]);
+			sign_p3.add(l[i]);
 		}
 
 		login_all.add(login_p1); login_all.add(login_p2);
-		sign_all.add(sign_p1); sign_all.add(sign_p2);
+		sign_all.add(sign_p1); sign_all.add(sign_p2); sign_all.add(sign_p3);
 		
 		add(login_all);
 		setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == b[0]) {			// ·Î±×ÀÎ
+		if (e.getSource() == b[0]) {			// ë¡œê·¸ì¸
 			try {
 				ResultSet rs=DB.stmt.executeQuery("SELECT * FROM user_info where ID = '" + String.valueOf(t[0].getPassword()) + "';");
 				rs.next();
 				
 				if (rs.getRow() == 0) {
-					JOptionPane.showMessageDialog(this, "Á¸ÀçÇÏÁö ¾Ê´Â ¾ÆÀÌµğ ÀÔ´Ï´Ù.");
-					t[0].setBorder(new LineBorder(Color.red, 2));
+					JOptionPane.showMessageDialog(this, "ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ì•„ì´ë”” ì…ë‹ˆë‹¤.");
+					setLinebd(t[0]);
 				} else {
 					if (rs.getString("PW").equals(String.valueOf(t[1].getPassword()))) {
-						JOptionPane.showMessageDialog(this, rs.getString("NickName") + "´Ô È¯¿µÇÕ´Ï´Ù.");
-						// ·Î±×ÀÎÀÌ ¼º°øÇÏ¸é °ÔÀÓÈ­¸éÀ¸·Î ³Ñ¾î°¡µµ·Ï
+						JOptionPane.showMessageDialog(this, rs.getString("NickName") + "ë‹˜ í™˜ì˜í•©ë‹ˆë‹¤.");
+						// ë¡œê·¸ì¸ì´ ì„±ê³µí•˜ë©´ ê²Œì„í™”ë©´ìœ¼ë¡œ ë„˜ì–´ê°€ë„ë¡
 						this.dispose();
 						new MainMenu("Bouncy Ball", 1400, 800);
 					} else {
-						JOptionPane.showMessageDialog(this, "ºñ¹Ğ¹øÈ£°¡ Æ²¸³´Ï´Ù.");
-						t[1].setBorder(new LineBorder(Color.red, 2));
+						JOptionPane.showMessageDialog(this, "ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë¦½ë‹ˆë‹¤.");
+						setLinebd(t[1]);
 					}
 				}
-				rs.close(); 		// Ç×»ó »ç¿ë ÈÄ ´İ¾ÆÁÖ´Â°Ô ¿øÄ¢
+				rs.close(); 		// í•­ìƒ ì‚¬ìš© í›„ ë‹«ì•„ì£¼ëŠ”ê²Œ ì›ì¹™
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -106,16 +117,51 @@ public class Login extends JFrame implements ActionListener {
 		} else if (e.getSource() == b[2]) {		// Cancel
 			System.exit(0);
 		} else if (e.getSource() == b[3]) {		// Insert
+			for (int i=2; i<TXT_SIZE; i++) {
+				if ( String.valueOf(t[i].getPassword()).equals(" " + t[i].getName()) ) {
+					JOptionPane.showMessageDialog(this, "ë¹ˆì¹¸ì´ ìˆìŠµë‹ˆë‹¤.");
+					setLinebd(t[i]);
+					return;
+				}
+			}
+			for (int i=2; i<TXT_SIZE; i++) {
+				if (l_check[i-2] == false) {
+					JOptionPane.showMessageDialog(this, "ì¡°ê±´ì´ ì¼ì¹˜í•˜ì§€ ì•ŠëŠ” ì •ë³´ê°€ ìˆìŠµë‹ˆë‹¤.");
+					setLinebd(t[i]);
+					return;
+				}
+			}
 			
+			JOptionPane.showMessageDialog(this, "ì…ë ¥ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
+			pageChange(sign_all, login_all);
 		} else if (e.getSource() == b[4]) {		// Go Login
 			pageChange(sign_all, login_all);
 		}
 	}
 	
 	public void pageChange(JPanel prev, JPanel next) {
-		remove(prev);					// ÀÌÀü ÆĞ³Î Á¦°Å
-		getContentPane().add(next);		// ´ÙÀ½ ÆĞ³Î ºÙÀÌ±â
-		revalidate();					// »õ·Î°íÄ§
-		repaint();						// »õ·Î°íÄ§
+		remove(prev);					// ì´ì „ íŒ¨ë„ ì œê±°
+		getContentPane().add(next);		// ë‹¤ìŒ íŒ¨ë„ ë¶™ì´ê¸°
+		revalidate();					// ìƒˆë¡œê³ ì¹¨
+		repaint();						// ìƒˆë¡œê³ ì¹¨
+	}
+	
+	public void setLinebd(JPasswordField t) {
+		t.setBorder(new LineBorder(Color.red, 2));
+	}
+	
+	public static boolean[] getCheckB() {
+		return l_check;
+	}
+	public static void updateCheck() {
+		for (int i=0; i<LBL_SIZE; i++) {
+			l[i].setText(lbl_name[i] + l_check[i]);
+		}
+	}
+	public static JPasswordField getPw() {
+		return t[5];
+	}
+	public static int getTxtSize() {
+		return TXT_SIZE;
 	}
 }

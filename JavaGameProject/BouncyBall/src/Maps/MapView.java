@@ -1,30 +1,33 @@
 package Maps;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import BAB.BlockAndBall;
 
-public class MapView extends JFrame implements KeyListener{
+public class MapView extends JPanel implements KeyListener{
 	private ArrayList<BlockAndBall> l = new ArrayList<>();			
-	private int[][] maps = MyMaps.MapList(0);				// ¸ÊÀÇ ÀÎµ¦½º ¼³Á¤
-	private int startPx = 30, startPy = 500;					// ½ÃÀÛ ÁöÁ¡
+	private int[][] maps = MyMaps.MapList(0);				// ë§µì˜ ì¸ë±ìŠ¤ ì„¤ì •
+	private int startPx = 0, startPy = 620;					// ì‹œì‘ ì§€ì 
 	private boolean isLeft = false, isRight = false;
 	private JLabel lb;
 	private final float GRAVITY = -9.8f;
 	private int myW = 1400, myH = 800;
 
 	public MapView() {
-		setSize(myW, myH);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null); // °¡¿îµ¥ ¹èÄ¡
-		setResizable(false); // È­¸é Å©±â °íÁ¤
-		setTitle("In Game");
+//		setSize(myW, myH);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setLocationRelativeTo(null); // ê°€ìš´ë° ë°°ì¹˜
+//		setResizable(false); // í™”ë©´ í¬ê¸° ê³ ì •
+//		setTitle("In Game");
 		setLayout(null);
+		setBackground(Color.white);
 		addKeyListener(this);
 
 		int f = 0, x = 0;
@@ -38,9 +41,9 @@ public class MapView extends JFrame implements KeyListener{
 		}
 
 		for (int i = 0; i < l.size(); i++) {
-			JLabel label = l.get(i);				// ÇÑ ºí·° ÇÑ ºí·° °¡Á®¿À±â
-			int floor = (maps.length - l.get(i).getFloor()) * 30; // ÇöÀç Ãş ÀúÀå
-			int w = l.get(i).getXpoint() * 30; // x°ª ÀúÀå
+			JLabel label = l.get(i);				// í•œ ë¸”ëŸ­ í•œ ë¸”ëŸ­ ê°€ì ¸ì˜¤ê¸°
+			int floor = (maps.length - l.get(i).getFloor()) * 30; // í˜„ì¬ ì¸µ ì €ì¥
+			int w = l.get(i).getXpoint() * 30; // xê°’ ì €ì¥
 			label.setLocation(w, myH - 100 - floor);
 			add(label);
 		}
@@ -70,7 +73,7 @@ public class MapView extends JFrame implements KeyListener{
 	}
 	
 	private class moving implements Runnable {
-		public void run() { while (true) move(); }		// ¹«ÇÑ ·çÇÁ·Î ¿òÁ÷ÀÓ ÀÔ·Â Ã¼Å©
+		public void run() { while (true) move(); }		// ë¬´í•œ ë£¨í”„ë¡œ ì›€ì§ì„ ì…ë ¥ ì²´í¬
 	}
 	
 	private void move() {

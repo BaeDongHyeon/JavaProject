@@ -5,30 +5,31 @@ import javax.swing.JLabel;
 import Utils.MyImage;
 
 public class BlockAndBall extends JLabel {
-	private String[][] imageName = {{"¾øÀ½", "default_block", "iron_block"}, {"Circle"}};
-	private int floor = 0;						// ¸î Ãş¿¡ ¹èÄ¡ÇÏ´ÂÁö Ç¥ÇöÇÒ ÀÎµ¦½º
-	private int x = 0;							// xÁÂÇ¥ÀÇ ÀÎµ¦½º ÀúÀå
-	private float weight = 0;					// µµÇüÀÇ ¹«°Ô ÀúÀå
-	private float accel = 0;					// °¡¼Óµµ ÀúÀå
+	private String[][] imageName = {{"ì—†ìŒ", "default_block", "iron_block", "thorn_block", "iteamDash_block", "jump_block", "Left_block", "electricity_block",
+		"Rightdiagonal_block", "jump", "going", "BlackPortal_block", "WhitePortal_block", "Warp_block", "move_block", "ChangeColor_block",
+		 "Star", "StarRainbow"}, {"Circle"}};
+	private int floor = 0;						// ëª‡ ì¸µì— ë°°ì¹˜í•˜ëŠ”ì§€ í‘œí˜„í•  ì¸ë±ìŠ¤
+	private int x = 0;							// xì¢Œí‘œì˜ ì¸ë±ìŠ¤ ì €ì¥
+	private float weight = 0;					// ë„í˜•ì˜ ë¬´ê²Œ ì €ì¥
+	private float accel = 0;					// ê°€ì†ë„ ì €ì¥
 	
 	
-	
-	public BlockAndBall(int block_num, int floor, int x) {			// ºí·° °¡Á®¿À±â
+	public BlockAndBall(int block_num, int floor, int x) {			// ë¸”ëŸ­ ê°€ì ¸ì˜¤ê¸°
 		this.floor = floor;
 		this.x = x;
-		if (block_num != 0) {		// ºí·° ÀÎµ¦½º°¡ 0ÀÌ ¾Æ´Ò¶§
-			this.setIcon(MyImage.getImage("Block\\" + imageName[0][block_num], 30, 30));	// ºí·° Æú´õ¿¡ ¹è¿­ÀÇ ÀÌ¸§À» ÀÌ¿ëÇÏ¿© ÀÌ¹ÌÁö »ğÀÔ »çÀÌÁî´Â 30, 30À¸·Î Á¶Á¤
-			setSize(30, 30);															// ·¹ÀÌºíÀÇ Å©±â 30, 30À¸·Î ÁöÁ¤
+		if (block_num != 0) {		// ë¸”ëŸ­ ì¸ë±ìŠ¤ê°€ 0ì´ ì•„ë‹ë•Œ
+			this.setIcon(MyImage.getImage("Block\\" + imageName[0][block_num], 30, 30));	// ë¸”ëŸ­ í´ë”ì— ë°°ì—´ì˜ ì´ë¦„ì„ ì´ìš©í•˜ì—¬ ì´ë¯¸ì§€ ì‚½ì… ì‚¬ì´ì¦ˆëŠ” 30, 30ìœ¼ë¡œ ì¡°ì •
+			setSize(30, 30);															// ë ˆì´ë¸”ì˜ í¬ê¸° 30, 30ìœ¼ë¡œ ì§€ì •
 		}
 	}
 	
 	
 	
 	
-	public BlockAndBall(int ball_num) {								// °ø °¡Á®¿À±â
-		this.setIcon(MyImage.getImage("Ball\\" + imageName[1][ball_num], 20, 20));	// º¼ Æú´õ¿¡ ¹è¿­ÀÇ ÀÌ¸§À» ÀÌ¿ëÇÏ¿© ÀÌ¹ÌÁö »ğÀÔ »çÀÌÁî´Â 20, 20À¸·Î Á¶Á¤
-		setSize(20, 20);															// ·¹ÀÌºíÀÇ Å©±â 20, 20À¸·Î ÁöÁ¤
-		setWeight(50);																// ¹«°Ô 50 ÀúÀå
+	public BlockAndBall(int ball_num) {								// ê³µ ê°€ì ¸ì˜¤ê¸°
+		this.setIcon(MyImage.getImage("Ball\\" + imageName[1][ball_num], 20, 20));	// ë³¼ í´ë”ì— ë°°ì—´ì˜ ì´ë¦„ì„ ì´ìš©í•˜ì—¬ ì´ë¯¸ì§€ ì‚½ì… ì‚¬ì´ì¦ˆëŠ” 20, 20ìœ¼ë¡œ ì¡°ì •
+		setSize(20, 20);															// ë ˆì´ë¸”ì˜ í¬ê¸° 20, 20ìœ¼ë¡œ ì§€ì •
+		setWeight(50);																// ë¬´ê²Œ 50 ì €ì¥
 	}
 	
 	

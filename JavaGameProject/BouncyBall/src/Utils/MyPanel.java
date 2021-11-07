@@ -5,7 +5,7 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-public class MyPanel extends JPanel {				// ¸ŞÀÎ È­¸é
+public class MyPanel extends JPanel {				// ë©”ì¸ í™”ë©´
 	private String imgName;
 	private int width, height;
 	private Image img;

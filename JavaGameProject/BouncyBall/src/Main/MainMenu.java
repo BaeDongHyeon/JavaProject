@@ -1,50 +1,110 @@
 package Main;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import Maps.MapView;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
+import Maps.MapView;
 import Utils.MyButton;
 import Utils.MyPanel;
 
 public class MainMenu extends JFrame implements ActionListener {
 	private JPanel p1;
 	private JButton b1, b2;
+	private JPanel panel = new JPanel();
+	private JButton play, ranking, back, setting;
+	private JButton[] map = new JButton[8];
+	private JScrollPane scroll = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	
 	public MainMenu(String title, int width, int height) {
-		setSize(width, height);							// ≈©±‚
-		setTitle(title);								// ¡¶∏Ò
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// «¡∑ŒººΩ∫ ¡æ∑·
-		setLocationRelativeTo(null);					 // ∞°øÓµ• πËƒ°
-		setResizable(false); 							// »≠∏È ≈©±‚ ∞Ì¡§
+		setSize(width, height);							// ÌÅ¨Í∏∞
+		setTitle(title);								// Ï†úÎ™©
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// ÌîÑÎ°úÏÑ∏Ïä§ Ï¢ÖÎ£å
+		setLocationRelativeTo(null);					 // Í∞ÄÏö¥Îç∞ Î∞∞Ïπò
+		setResizable(false); 							// ÌôîÎ©¥ ÌÅ¨Í∏∞ Í≥†Ï†ï
 		
-		p1=new MyPanel("main_background", 1385, 760);					// ±◊∏Æ±‚ ∆–≥Œ
+		p1=new MyPanel("main_background", 1385, 760);					// Í∑∏Î¶¨Í∏∞ Ìå®ÎÑê
 		p1.setLayout(null);
 		
-		b1 = new MyButton("Button\\play_Button", 300, 100);	b1.setLocation(0, 300);
-		b2 = new MyButton("Button\\RanKing_Button", 300, 100); b2.setLocation(0, 430);
-		p1.add(b1); p1.add(b2);
-		b1.addActionListener(this);
+		play = new MyButton("Button\\play_Button", 300, 100);	play.setLocation(470, 300);
+		ranking = new MyButton("Button\\RanKing_Button", 300, 100); ranking.setLocation(70, 300);
+		setting = new MyButton("Button\\setting_Button", 300, 100); setting.setLocation(900, 300);
+		back = new MyButton("Button\\back_Button", 100, 50); back.setLocation(50, 50);
+		back.setVisible(false); scroll.setVisible(false);
+		scroll.getVerticalScrollBar().setUnitIncrement(30); //Ïä§ÌÅ¨Î°§ ÏÜçÎèÑ
 		
+		p1.add(play); p1.add(ranking);
+		p1.add(back); p1.add(scroll);
+		p1.add(setting);
 		add(p1);
+		
+		play.addActionListener(this);
+		ranking.addActionListener(this);
+		back.addActionListener(this);
+				
+		// Îßµ ÏÑ†ÌÉù Ïä§ÌÅ¨Î°§
+		scroll.setBounds(400, 200, 500, 400);
+		panel.setLayout(new GridLayout(map.length, 1));
+		for(int i=0;i<map.length;i++) {
+			map[i] = new MyButton("Button\\map" + i + "_Button", 450, 400);
+			panel.add(map[i]);
+			map[i].addActionListener(this);
+		}
+		
 		setVisible(true);
 	}
 
 	public static void main(String[] args) {
 		new Login();
-//		new MainMenu("Bouncy Ball", 1400, 800);
-//		new MapView();
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == b1) {
+		if (e.getSource() == play) {
+			remove(p1);			
+			p1=new MyPanel("select_background", 1385, 760);
+			getContentPane().add(p1);	
+			revalidate();				
+			repaint();					
+			p1.setLayout(null);
+			p1.add(back); p1.add(scroll);			
+			back.setVisible(true); scroll.setVisible(true);
+		} 
+		else if (e.getSource() == ranking) {
 			remove(p1);
+			p1=new MyPanel("ranking_background", 1385, 760);
+			getContentPane().add(p1);	
+			revalidate();				
 			repaint();
-		} else if (e.getSource() == b2) {
-			System.out.println("æ∆¡˜ æ∆π´ ¿Ã∫•∆Æ æ¯¿Ω");
+			p1.setLayout(null);
+			p1.add(back);
+			back.setVisible(true);
+		}
+		else if(e.getSource() == back) {
+			remove(p1);			
+			p1=new MyPanel("main_background", 1385, 760);
+			getContentPane().add(p1);	
+			revalidate(); repaint();					
+			p1.setLayout(null);
+			p1.add(play); p1.add(ranking); 
+			p1.add(setting);
+		}
+		else if(e.getSource() == map[0]) {
+			remove(p1);					
+			p1=new MapView();
+			getContentPane().add(p1);		
+			revalidate(); repaint();					
+			p1.setLayout(null);			
+		}
+		else if(e.getSource() == map[1]) {
+			remove(p1);					
+			p1=new MapView();
+			getContentPane().add(p1);		
+			revalidate(); repaint();					
+			p1.setLayout(null);			
 		}
 	}
 }

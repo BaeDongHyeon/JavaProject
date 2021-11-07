@@ -10,12 +10,12 @@ public class DB {
 	public DB() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");		
-			//µå¶óÀÌ¹ö ·Îµå(ÃÖ½Å ¹öÀüÀº À§¿Í°°ÀÌ cj¸¦ ºÙ¿©¾ß ÇÔ)
+			//ë“œë¼ì´ë²„ ë¡œë“œ(ìµœì‹  ë²„ì „ì€ ìœ„ì™€ê°™ì´ cjë¥¼ ë¶™ì—¬ì•¼ í•¨)
 			con = DriverManager.getConnection("jdbc:mysql://localhost/", "user", "1234");
-			// °èÁ¤ Á¢¼Ó(user °èÁ¤¿¡ Á¢¼ÓÇÏ°í SSL¹®±¸¸¦ Ç¥½Ã ¾ÈÇÔ)
+			// ê³„ì • ì ‘ì†(user ê³„ì •ì— ì ‘ì†í•˜ê³  SSLë¬¸êµ¬ë¥¼ í‘œì‹œ ì•ˆí•¨)
 			stmt = con.createStatement();
 			stmt.execute("use user_information");
-			// user_informationÀÌ¶ó´Â ½ºÅ°¸¶¸¦ »ç¿ë
+			// user_informationì´ë¼ëŠ” ìŠ¤í‚¤ë§ˆë¥¼ ì‚¬ìš©
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

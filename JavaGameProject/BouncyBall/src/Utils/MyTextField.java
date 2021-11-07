@@ -3,39 +3,85 @@ package Utils;
 import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.sql.ResultSet;
 
 import javax.swing.JPasswordField;
 import javax.swing.border.LineBorder;
 
 public class MyTextField extends JPasswordField implements FocusListener {
 	public MyTextField(int size, String name) {
-		setColumns(size);				// Å©±â
-		setOpaque(false);				// ºÒÅõ¸íµµ ÇØÁ¦
-		addFocusListener(this);			// Æ÷Ä¿½º ¸®½º³Ê
-		setEchoChar((char)0);			// Ã³À½¿¡´Â ±ÛÀÚ Ç¥½Ã
-		setName(name);					// ÀÌ¸§ ÁöÁ¤
-		setText(" " + getName());		// ±âº» ÅØ½ºÆ® ÁöÁ¤
-		setBorder(new LineBorder(new Color(0, 0, 0)));	// °ËÀº»ö Å×µÎ¸® ÁöÁ¤
+		setColumns(size);				// í¬ê¸°
+		setOpaque(false);				// ë¶ˆíˆ¬ëª…ë„ í•´ì œ
+		addFocusListener(this);			// í¬ì»¤ìŠ¤ ë¦¬ìŠ¤ë„ˆ
+		setEchoChar((char)0);			// ì²˜ìŒì—ëŠ” ê¸€ì í‘œì‹œ
+		setName(name);					// ì´ë¦„ ì§€ì •
+		setText(" " + getName());		// ê¸°ë³¸ í…ìŠ¤íŠ¸ ì§€ì •
+		setBorder(new LineBorder(new Color(0, 0, 0)));	// ê²€ì€ìƒ‰ í…Œë‘ë¦¬ ì§€ì •
 	}
 
 	public void focusGained(FocusEvent e) {
-		JPasswordField text = (JPasswordField) e.getSource();		// JPasswordFieldÇüÅÂ·Î getSource ¹Ş±â
-		text.setBorder(new LineBorder(new Color(0, 0, 0)));			// Æ÷Ä¿½º ¾òÀ¸¸é Å×µÎ¸® °ËÀº»öÀ¸·Î
-		text.setBackground(new Color(79, 167, 255));				// Æ÷Ä¿½º¸¦ ¾òÀ¸¸é ¹è°æ»ö ¹Ù²Ù±â
-		text.setOpaque(true);										// ºÒÅõ¸íµµ true
-		if (String.valueOf(text.getPassword()).equals(" " + text.getName())) {	// ±âº» ÅØ½ºÆ® °ªÀÌ ÀÖÀ¸¸é
-			text.setText("");													// ºóÄ­À¸·Î ¸¸µé±â
-			if (text.getName().equals("PW") || text.getName().equals("PW Check")) text.setEchoChar('¡Ü');				// ÄÄÆ÷³ÍÆ® ÀÌ¸§ÀÌ PWÀÌ¸é ºñ¹Ğ¹øÈ£ ¾ÏÈ£È­ ½ÇÇà
+		JPasswordField text = (JPasswordField) e.getSource();		// JPasswordFieldí˜•íƒœë¡œ getSource ë°›ê¸°
+		text.setBorder(new LineBorder(new Color(0, 0, 0)));			// í¬ì»¤ìŠ¤ ì–»ìœ¼ë©´ í…Œë‘ë¦¬ ê²€ì€ìƒ‰ìœ¼ë¡œ
+		text.setBackground(new Color(79, 167, 255));				// í¬ì»¤ìŠ¤ë¥¼ ì–»ìœ¼ë©´ ë°°ê²½ìƒ‰ ë°”ê¾¸ê¸°
+		text.setOpaque(true);										// ë¶ˆíˆ¬ëª…ë„ true
+		if (String.valueOf(text.getPassword()).equals(" " + text.getName())) {	// ê¸°ë³¸ í…ìŠ¤íŠ¸ ê°’ì´ ìˆìœ¼ë©´
+			text.setText("");													// ë¹ˆì¹¸ìœ¼ë¡œ ë§Œë“¤ê¸°
+			if (text.getName().equals("PW") || text.getName().equals("PW Check")) text.setEchoChar('â—');				// ì»´í¬ë„ŒíŠ¸ ì´ë¦„ì´ PWì´ë©´ ë¹„ë°€ë²ˆí˜¸ ì•”í˜¸í™” ì‹¤í–‰
 		}
 	}
 
 	public void focusLost(FocusEvent e) {
-		JPasswordField text = (JPasswordField) e.getSource();		// JPasswordFieldÇüÅÂ·Î getSource ¹Ş±â
-		text.setBackground(new Color(0, 0, 0));						// Æ÷Ä¿½º ÀÒÀ¸¸é ¹è°æ»ö ¾ø¾Ö±â
-		text.setOpaque(false);										// ºÒÅõ¸íµµ false
-		if (String.valueOf(text.getPassword()).equals("")) {					// ÅØ½ºÆ® ¹Ú½º°¡ ºñ¾î ÀÖÀ¸¸é
-			text.setText(" " + text.getName());									// ±âº» ÅØ½ºÆ® °ªÀ¸·Î º¯°æ
-			if (text.getName().equals("PW") || text.getName().equals("PW Check")) text.setEchoChar((char)0);			// ÄÄÆ÷³ÍÆ® ÀÌ¸§ÀÌ PWÀÌ¸é ºñ¹Ğ¹øÈ£ ¾ÏÈ£È­ ÇØÁ¦
-		} 
+		boolean[] checkList = Main.Login.getCheckB();
+		JPasswordField text = (JPasswordField) e.getSource();		// JPasswordFieldí˜•íƒœë¡œ getSource ë°›ê¸°
+		text.setBackground(new Color(0, 0, 0));						// í¬ì»¤ìŠ¤ ìƒìœ¼ë©´ ë°°ê²½ìƒ‰ ì—†ì• ê¸°
+		text.setOpaque(false);										// ë¶ˆíˆ¬ëª…ë„ false
+		if (String.valueOf(text.getPassword()).equals("")) {					// í…ìŠ¤íŠ¸ ë°•ìŠ¤ê°€ ë¹„ì–´ ìˆìœ¼ë©´
+			text.setText(" " + text.getName());									// ê¸°ë³¸ í…ìŠ¤íŠ¸ ê°’ìœ¼ë¡œ ë³€ê²½
+			for (int i=2; i<Main.Login.getTxtSize(); i++) {
+				if (String.valueOf(text.getPassword()).equals(" " + text.getName())) {
+					checkList[i-2] = false; 
+				}
+			}
+			if (text.getName().equals("PW") || text.getName().equals("PW Check")) text.setEchoChar((char)0);			// ì»´í¬ë„ŒíŠ¸ ì´ë¦„ì´ PWì´ë©´ ë¹„ë°€ë²ˆí˜¸ ì•”í˜¸í™” í•´ì œ
+		}
+		
+		ResultSet rs;
+		try {
+			if (!String.valueOf(text.getPassword()).equals(" " + text.getName())) {
+				if (text.getName().equals("NickName")) {
+					rs=DB.DB.stmt.executeQuery("select * from user_info where NickName = '" + String.valueOf(text.getPassword()) + "'");
+					rs.next();
+					System.out.println(rs.getRow());
+					if (rs.getRow() == 0) checkList[0] = true;			// ì‚¬ìš© ê°€ëŠ¥í•œ ë‹‰ë„¤ì„
+					else checkList[0] = false;			// ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ë‹‰ë„¤ì„
+					rs.close();
+				} else if (text.getName().equals("Phone")) {
+					rs=DB.DB.stmt.executeQuery("select * from user_info where Phone = '" + String.valueOf(text.getPassword()) + "'");
+					rs.next();
+					if (rs.getRow() == 0) checkList[1] = true;			// ì‚¬ìš© ê°€ëŠ¥í•œ ì „í™”ë²ˆí˜¸
+					else checkList[1] = false;			// ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì „í™”ë²ˆí˜¸
+					rs.close();
+				} else if (text.getName().equals("ID")) {
+					rs=DB.DB.stmt.executeQuery("select * from user_info where ID = '" + String.valueOf(text.getPassword()) + "'");
+					rs.next();
+					if (rs.getRow() == 0) checkList[2] = true;			// ì‚¬ìš© ê°€ëŠ¥í•œ ì•„ì´ë””
+					else checkList[2] = false;			// ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì•„ì´ë””
+					rs.close();
+				} else if (text.getName().equals("PW")) {
+					if (text.getPassword().length > 4) {
+						checkList[3] = true;
+					} else {
+						checkList[3] = false;
+					}
+				} else if (text.getName().equals("PW Check")) {
+					if (String.valueOf(text.getPassword()).equals(String.valueOf(Main.Login.getPw().getPassword()))) {
+						checkList[4] = true;
+					} else {
+						checkList[4] = false;
+					}
+				}
+			}
+			Main.Login.updateCheck();
+		} catch (Exception e1) {e1.printStackTrace();}
 	}
 }

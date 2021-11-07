@@ -1,6 +1,7 @@
 package Utils;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -9,15 +10,15 @@ import javax.swing.JButton;
 public class MyButton extends JButton implements MouseListener {
 	private String ImageName=null;
 	private int width = 0, height = 0;
-	public MyButton(String ImageName, int width, int height) {	// ÀÌ¹ÌÁö¸í, »çÀÌÁî width, height
+	public MyButton(String ImageName, int width, int height) {	// ì´ë¯¸ì§€ëª…, ì‚¬ì´ì¦ˆ width, height
 		this.ImageName = ImageName;
 		this.width = width;
 		this.height = height;
 		setSize(width, height);
 		setIcon(MyImage.getImage(ImageName, width, height));
-		setBorderPainted(false);		// ¹öÆ° Å×µÎ¸® ¼³Á¤
-		setContentAreaFilled(false);	// ¹öÆ° ¿µ¿ª ¹è°æ Ç¥½Ã ¼³Á¤
-		setFocusPainted(false);			// Æ÷Ä¿½º Ç¥½Ã ¼³Á¤
+		setBorderPainted(false);		// ë²„íŠ¼ í…Œë‘ë¦¬ ì„¤ì •
+		setContentAreaFilled(false);	// ë²„íŠ¼ ì˜ì—­ ë°°ê²½ í‘œì‹œ ì„¤ì •
+		setFocusPainted(false);			// í¬ì»¤ìŠ¤ í‘œì‹œ ì„¤ì •
 		setOpaque(false);
 		setBackground(Color.white);
 		
@@ -37,11 +38,13 @@ public class MyButton extends JButton implements MouseListener {
 	}
 
 	public void mouseEntered(MouseEvent e) {
-		setIcon(MyImage.getImage(ImageName + "_click", width, height));
+		setIcon(MyImage.getImage(ImageName + "_Entered", width, height));
+		setCursor(new Cursor(Cursor.HAND_CURSOR));			// ì†ê°€ë½ ëª¨ì–‘ ìˆìŒ
 	}
 
 	public void mouseExited(MouseEvent e) {
 		setIcon(MyImage.getImage(ImageName, width, height));
+		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			// ì†ê°€ë½ ëª¨ì–‘ ì—†ìŒ
 	}
 	
 }

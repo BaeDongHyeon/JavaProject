@@ -1,9 +1,0 @@
-package Utils;
-
-import javax.swing.JPasswordField;
-
-public class MyTextField extends JPasswordField {
-	public MyTextField() {
-		
-	}
-}
