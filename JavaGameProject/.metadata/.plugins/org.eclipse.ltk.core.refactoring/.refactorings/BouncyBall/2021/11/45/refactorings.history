@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;BouncyBall/ImageFile/Button/Login.png&apos; to &apos;Login_Button.png&apos;" description="Rename resource &apos;Login.png&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="ImageFile/Button/Login.png" name="Login_Button.png" stamp="1635765176850" updateReferences="true"/>
-</session>
