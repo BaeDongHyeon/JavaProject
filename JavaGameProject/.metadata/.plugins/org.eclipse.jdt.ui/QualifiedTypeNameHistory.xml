@@ -1,10 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="DB.DB"/>
-    <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
-    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
-    <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
-    <fullyQualifiedTypeName name="Client.Client"/>
-    <fullyQualifiedTypeName name="Utils.MyPanel"/>
-    <fullyQualifiedTypeName name="Utils.MyTextField"/>
-</qualifiedTypeNameHistroy>
+<qualifiedTypeNameHistroy/>
