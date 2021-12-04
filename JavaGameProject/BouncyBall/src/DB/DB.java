@@ -14,15 +14,14 @@ import Screen.MainMenu;
 public class DB {
 	private Connection con;
 	private Statement stmt;
+	private String serverIP = "localhost";
 	public DB() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");		
 			//드라이버 로드(최신 버전은 위와같이 cj를 붙여야 함)
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/", "user", "1234");
-			// 계정 접속(user 계정에 접속하고 SSL문구를 표시 안함)
+			con = DriverManager.getConnection("jdbc:mysql://" + serverIP + ":3306/user_information", "user", "1234");
+			// 계정 접속 후 user_information 스키마로 접근
 			stmt = con.createStatement();
-			stmt.execute("use user_information");
-			// user_information이라는 스키마를 사용
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,14 +46,16 @@ public class DB {
 		return 0;
 	}
 	
-	public void SignUp(String nickname, String id, String pw, String pw_question, String pw_answer) {
+	public void SignUp(String id, String pw, String NickName, String question, String answer) {
 		try {
-			PreparedStatement pstmt = con.prepareStatement("insert into userlist values (?,?,?,?,?)");
-			pstmt.setString(1, nickname);
+			PreparedStatement pstmt = con.prepareStatement("insert into userlist values (?,?,?,?,?,?)");
+			ResultSet rs = stmt.executeQuery("SELECT count(*) as cnt FROM userlist"); rs.next();
+			pstmt.setInt(1, rs.getInt("cnt") + 1);
 			pstmt.setString(2, id);
 			pstmt.setString(3, pw);
-			pstmt.setString(4, pw_question);
-			pstmt.setString(5, pw_answer);
+			pstmt.setString(4, NickName);
+			pstmt.setString(5, question);
+			pstmt.setString(6, answer);
 			
 			int result = pstmt.executeUpdate();
 			
@@ -63,6 +64,16 @@ public class DB {
 			pstmt.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "입력에 실패했습니다.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void PasswordUpdate(String id, String pw) {
+		try {
+			int result = stmt.executeUpdate("update userlist set PW='" + pw + "' where ID='" + id + "'");
+			if (result == 1) JOptionPane.showMessageDialog(null, "변경이 완료되었습니다.");
+			else JOptionPane.showMessageDialog(null, "변경이 실패되었습니다.");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

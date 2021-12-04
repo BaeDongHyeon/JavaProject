@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import BAB.BlockAndBall;
+import Client.Client;
 import Screen.MainMenu;
 import Utils.MyButton;
 
@@ -19,15 +20,77 @@ public class MapView extends JFrame implements KeyListener, ActionListener {
 	private ArrayList<BlockAndBall> l = new ArrayList<>();
 	private int[][] maps = MyMaps.MapList(0);				// 맵의 인덱스 설정
 	private int angle = 130, power = 0, angle_vel=1, power_vel=1;				// 시작 지점
-	private int startPx = 0, startPy = 620, blly=0, ballvelx=0, ballvely=0, ballx=0, bally=0,  gravity = 3;//중력  
-	private boolean isLeft=false, isRight=false, isJump=false, down=false, jump=false, Left=false;
-	private JLabel lb;
+	private static int startPx = 0;//중력  
+	private static int startPy = 620;
+	private static int startPx2 = 620;
+	private static int startPy2 = 620;
+	private int blly=0;
+	private int ballvelx=0;
+	private int ballvely=0;
+	private int ballx=0;
+	private int bally=0;
+	private int gravity = 3;
+	private boolean isLeft=false, isRight=false, isJump=false, down=false, jump=false, Left=false, isUp=false, isDown=false;
+	private JLabel lb, lb2;
 	private JButton game_back;
 	private final float GRAVITY = -9.8f;
 	private int myW = 1400, myH = 800;	
 	private BufferedImage image;
+	Client cli;
 	
-	public MapView() {
+	public static int[] get_startPx() {
+		int[] startLo = {startPx, startPy};
+		return startLo;
+	}
+	
+	public static void set_startPx2(int num) {
+		startPx2=num;
+	}
+	
+	public static void set_startPy2(int num) {
+		startPy2=num;
+	}
+	
+	private class p2moving implements Runnable{
+		public void run() {
+			while(true)
+			lb2.setLocation(startPx2, startPy2);
+		}
+	}
+	public void startp2mv() {
+		Thread t3=new Thread(new p2moving());
+		t3.start();
+	}
+	
+	private class check_onlyp2 implements Runnable{
+		public void run() {
+			boolean check=false;
+			while(true) {
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println(startPx2);
+				
+				if(startPy2!=620) {
+				
+					System.out.println("받아옴123");
+					lb2 = new BlockAndBall(0); // 공2
+					add(lb2);
+					check=true;
+					if(check)
+						startp2mv();
+					break;
+				}
+			}
+		}
+	}
+	
+	
+	public MapView(Client c) {
+		cli = c;
 		setSize(myW, myH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); // 가운데 배치
@@ -68,8 +131,11 @@ public class MapView extends JFrame implements KeyListener, ActionListener {
 		setVisible(true);
 		Thread t1=new Thread(new gravity());
 		Thread t2=new Thread(new moving());
+		Thread t4=new Thread(new check_onlyp2());
+		
 		t1.start();
 		t2.start();
+		t4.start();
 	}
 	
 	private class gravity implements Runnable {
@@ -84,14 +150,37 @@ public class MapView extends JFrame implements KeyListener, ActionListener {
 		}
 	}
 	
+	public class pushlo implements Runnable{
+		public void run() {
+			while (true) {
+				try {
+					Thread.sleep(3);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//여기에 sleep줘야 연결되는동안 에러안남
+				cli.push_lo();
+			}
+		}
+	}
+	
 	private class moving implements Runnable {
-		public void run() { while (true) move(); }		// 무한 루프로 움직임 입력 체크
+		Thread t3=new Thread(new pushlo());
+		public void run() {
+			t3.start();
+			while(true)
+			move(); 
+
+		}		// 무한 루프로 움직임 입력 체크
 	}
 	
 	private void move() {
 		try {
 			if (startPx>0 && isLeft) startPx -= 5;
-			if (startPx<1230 && isRight) startPx += 5;
+			if (startPx<1240 && isRight) startPx += 5;
+			if (startPy<740 && isDown) startPy += 5;
+			if (startPy>0 && isUp) startPy -= 5;
 			lb.setLocation(startPx, startPy);
 			Thread.sleep(10);
 		} catch (Exception e) {
@@ -108,6 +197,12 @@ public class MapView extends JFrame implements KeyListener, ActionListener {
 			case KeyEvent.VK_RIGHT:
 				isRight = true;
 				break;
+			case KeyEvent.VK_UP:
+				isUp = true;
+				break;
+			case KeyEvent.VK_DOWN:
+				isDown = true;
+				break;
 		}
 	}
 	public void keyReleased(KeyEvent e) {
@@ -117,6 +212,12 @@ public class MapView extends JFrame implements KeyListener, ActionListener {
 				break;
 			case KeyEvent.VK_RIGHT:
 				isRight = false;
+				break;
+			case KeyEvent.VK_UP:
+				isUp = false;
+				break;
+			case KeyEvent.VK_DOWN:
+				isDown = false;
 				break;
 		}
 	}

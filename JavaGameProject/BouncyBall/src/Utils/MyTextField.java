@@ -19,7 +19,7 @@ public class MyTextField extends JPasswordField implements FocusListener {
 		setBorder(new LineBorder(new Color(0, 0, 0)));	// 검은색 테두리 지정
 	}
 	
-	public String getText() {
+	public String getTextF() {
 		return String.valueOf(getPassword());
 	}
 

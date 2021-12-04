@@ -35,7 +35,7 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 	private JButton id_check = new JButton("중복 확인");
 	private JButton forgot_check = new JButton("아이디 확인");
 	private JButton question_check = new JButton("질문 확인");
-	private JPasswordField[] t = new JPasswordField[TXT_SIZE];
+	private MyTextField[] t = new MyTextField[TXT_SIZE];
 	private String[] check_btn = {"중복 확인", "아이디 확인"};
 	private String[] btn_name = {"Login", "Sign Up", "Forgot Password", "close", "Insert", "Go Login", "Reset", "Go Login"};
 	private String[] txt_name = {"ID", "PW", "NickName", "ID", "PW", "PW Check", "비밀번호 찾기 답변", "ID", "비밀번호 찾기 답변", "PW", "PW Check"};
@@ -45,9 +45,13 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 	private JComboBox question_box2 = new JComboBox(question_list);
 	private JPanel login_all, sign_all, forgot_all;
 	private JLabel[] l = new JLabel[LBL_SIZE];
-	private boolean[] l_check = {false, false, false, false, true, false};
+	private boolean[] l_check = {false, false, false, false, false, false};
 	private boolean[] f_check = {false, false, false, false, false};
 	// static이 붙은 변수들은 모두 MyTextField에서 사용하기 위함
+	
+	public static void main(String[] args) {
+		new Login();
+	}
 	
 	public Login() {
 		setSize(500, 500);
@@ -107,6 +111,7 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 					forgot_p1.add(t[i]);
 					question_check.setPreferredSize(new Dimension(100,30));
 					question_check.addActionListener(this);
+					
 					forgot_p1.add(t[i]);
 					forgot_p1.add(question_check);
 				}
@@ -142,6 +147,8 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 			
 			if (i < 2) login_p1.add(t[i]);		// 로그인 텍스트
 		}
+		t[6].enableInputMethods(true);
+		t[8].enableInputMethods(true);
 		
 		for (int i=0; i<BTN_SIZE; i++) {
 			b[i] = new JButton(btn_name[i]);
@@ -175,56 +182,40 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == nick_check) {			// 닉네임 중복확인
-			l_check[0]=db.overlap_check("NickName", String.valueOf(t[2].getPassword()), !String.valueOf(t[2].getPassword()).equals(" "+t[2].getName()));	// 사용 가능 여부 체크
+		if (e.getSource() == nick_check) {
+			l_check[0]=db.overlap_check("NickName", t[2].getTextF(), !t[2].getTextF().equals(" "+t[2].getName()));	// 사용 가능 여부 체크
 			l[0].setText(lbl_name[0] + l_check[0]);			// 사용 가능 여부 닉네임
 		}
 		else if (e.getSource() == id_check) {		// id 중복확인
-			l_check[1]=db.overlap_check("ID", String.valueOf(t[3].getPassword()), !String.valueOf(t[3].getPassword()).equals(" "+t[3].getName()));	// 사용 가능 여부 체크
+			l_check[1]=db.overlap_check("ID", t[3].getTextF(), !t[3].getTextF().equals(" "+t[3].getName()));	// 사용 가능 여부 체크
 			l[1].setText(lbl_name[1] + l_check[1]);			// 사용 가능 여부 아이디
 		}
 		else if (e.getSource() == forgot_check) {		// 비밀번호 찾기 시 id 확인
-				if (!db.overlap_check("ID", String.valueOf(t[7].getPassword()), !String.valueOf(t[7].getPassword()).equals(" "+t[7].getName())))	// 사용 가능 여부 체크
-					f_check[0] = true;
-				else
-					f_check[0] = false;
-				l[6].setText(lbl_name[6] + f_check[0]);			// 사용 가능한 아이디
+			f_check[0] = !db.overlap_check("ID", t[7].getTextF(), !t[7].getTextF().equals(" "+t[7].getName()));
+			l[6].setText(lbl_name[6] + f_check[0]);			// 사용 가능한 아이디
 		}
 		else if (e.getSource() == question_check) {		// 비밀번호 찾기 시 질문, 답변 확인
-//			try {
-//				ResultSet rs=db.stmt.executeQuery("select * from user_info where ID = '" + String.valueOf(t[3].getPassword()) + "'");
-//				rs.next();
-//				if (rs.getRow() == 0 && !String.valueOf(t[3].getPassword()).equals(" "+t[3].getName())) {
-//					f_check[1]=true;
-//					l[6].setText(lbl_name[6] + f_check[0]);			// 사용 가능한 아이디
-//				}
-//				else {
-//					f_check[1]=false;
-//					l[6].setText(lbl_name[6] + f_check[1]);			// 이미 존재하는 아이디
-//				}
-//				rs.close();
-//			} catch (SQLException e1) {
-//				e1.printStackTrace();
-//			}
 			try {
-				ResultSet rs = db.search("ID", String.valueOf(t[7].getPassword()));
+				ResultSet rs = db.search("ID", t[7].getTextF());
 				if (rs == null) {
 					JOptionPane.showMessageDialog(this, "ID 확인을 다시 해주십시오");
 					return;
 				}	// 검색되는 아이디가 없을경우
 				
-				if (question_box2.getSelectedItem().equals(rs.getString("PW_question"))) {
-					if (rs.getString("PW_answer").equals(String.valueOf(t[8].getPassword()))) {
-						
-					}
+				if (question_box2.getSelectedItem().equals(rs.getString("question"))) {			// 확인된 ID의 질문이 선택된 경우
+					if (rs.getString("answer").equals(t[8].getTextF())) 						// 확인된 질문의 답변이 일치하는 경우
+						f_check[1] = true;
+					else 
+						f_check[1] = false;
+					l[8].setText(lbl_name[8] + f_check[1]);
 				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		}
 		else if (e.getSource() == b[0]) {			// 로그인
-			String id = String.valueOf(t[0].getPassword());
-			String pw = String.valueOf(t[1].getPassword());
+			String id = t[0].getTextF();
+			String pw = t[1].getTextF();
 			int login_code = db.login(id, pw);
 			if (login_code == -1) {
 				setLinebd(t[0]);
@@ -256,9 +247,9 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 				}
 			}
 			
-			JOptionPane.showMessageDialog(this, "입력이 완료되었습니다.");
+			db.SignUp(t[3].getTextF(), t[4].getTextF(), t[2].getTextF(), question_box1.getSelectedItem().toString(), t[6].getText());
 			pageChange(sign_all, login_all);
-		} else if (e.getSource() == b[6]) {
+		} else if (e.getSource() == b[6]) {		// reset
 			for (int i=7; i<TXT_SIZE; i++) {
 				if (String.valueOf(t[i].getPassword()).equals(" " + t[i].getName()) ) {
 					JOptionPane.showMessageDialog(this, "빈칸이 있습니다.");
@@ -274,7 +265,7 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 				}
 			}
 			
-			JOptionPane.showMessageDialog(this, "입력이 완료되었습니다.");
+			db.PasswordUpdate(t[7].getTextF(), t[9].getTextF());
 			pageChange(sign_all, login_all);
 		} else if (e.getSource() == b[5]) {		// Go Login
 			pageChange(sign_all, login_all);
@@ -284,18 +275,8 @@ public class Login extends JFrame implements ActionListener, KeyListener {
 	}
 	
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void keyTyped(KeyEvent e) {}
+	public void keyPressed(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {
 		if(e.getSource()==t[4] || e.getSource()==t[9]) {					// 비밀번호 입력란
 			int p;

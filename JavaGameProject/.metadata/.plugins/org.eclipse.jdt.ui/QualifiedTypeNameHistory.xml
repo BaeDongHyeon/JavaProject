@@ -4,4 +4,7 @@
     <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
     <fullyQualifiedTypeName name="java.sql.ResultSet"/>
     <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+    <fullyQualifiedTypeName name="Client.Client"/>
+    <fullyQualifiedTypeName name="Utils.MyPanel"/>
+    <fullyQualifiedTypeName name="Utils.MyTextField"/>
 </qualifiedTypeNameHistroy>
