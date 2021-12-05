@@ -19,7 +19,7 @@ public class Client {
 		Thread systemIn;
 		
 		// 서버 IP와 포트로 연결되는 소켓채널 생성
-		try (SocketChannel socket = SocketChannel.open(new InetSocketAddress("121.181.4.68", 5150))) {
+		try (SocketChannel socket = SocketChannel.open(new InetSocketAddress("127.0.0.1", 5150))) {
 
 			// 모니터 출력에 출력할 채널 생성
 			WritableByteChannel out = Channels.newChannel(System.out);

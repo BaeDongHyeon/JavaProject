@@ -28,6 +28,12 @@ public class MainMenu extends JFrame implements ActionListener {
 	private JScrollPane scroll = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	private int nowSelect=0;
 	
+	public static void main(String[] args) {
+		Client c = new Client();
+		MapView mp = new MapView(c);
+		c.main(args);
+	}
+	
 	public MainMenu(String title, int width, int height) {
 		setSize(width, height);							// 크기
 		setTitle(title);								// 제목
@@ -172,8 +178,6 @@ public class MainMenu extends JFrame implements ActionListener {
 		*/
 			this.dispose();
 			//new MapView(); 서버붙이면서 없앴음
-			Client c = new Client();
-			MapView mp = new MapView(c);
 		}
 	}
 	
