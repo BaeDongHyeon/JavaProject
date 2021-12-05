@@ -29,9 +29,9 @@ public class MainMenu extends JFrame implements ActionListener {
 	private int nowSelect=0;
 	
 	public static void main(String[] args) {
-		Client c = new Client();
-		MapView mp = new MapView(c);
-		c.main(args);
+//		Client c = new Client();
+		MapView mp = new MapView(null);
+//		c.main(args);
 	}
 	
 	public MainMenu(String title, int width, int height) {

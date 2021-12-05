@@ -46,8 +46,7 @@ public class Client {
 				IntBuffer readIntBuffer = outputBuf3.asIntBuffer();
 				int[] readData = new int[readIntBuffer.capacity()];
 				readIntBuffer.get(readData);
-				MapView.set_startPx2(readData[0]);
-				MapView.set_startPy2(readData[1]);
+				MapView.set_startPos(readData[0], readData[1]);
 				buf.clear();
 
 			}
