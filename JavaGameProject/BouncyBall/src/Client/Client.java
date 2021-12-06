@@ -8,12 +8,14 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
-import java.util.Arrays;
 
-import Maps.*;
+import Maps.MapView;
+
 
 public class Client {
 	static SocketChannel socket2;
+	static String pp="전송가능";
+	
 	public static void main(String[] args) {
 		Thread push_locate;
 		Thread systemIn;
@@ -25,13 +27,12 @@ public class Client {
 			WritableByteChannel out = Channels.newChannel(System.out);
 
 			// 버퍼 생성
-			ByteBuffer buf = ByteBuffer.allocate(8);
+			ByteBuffer buf = ByteBuffer.allocate(256);
 
 			// 출력을 담당할 스레드 생성 및 실행
 			// systemIn = new Thread(new SystemIn(socket)); //1회성 아이디입력, 서버 info.isID 잠깐 닫아놈
 			// 좌표만 찍어보게
 			// systemIn.start();
-			System.out.println("rr");
 			socket2=socket;
 			
 			//이거왜잇는지모르겠음 일단보류
@@ -46,7 +47,10 @@ public class Client {
 				IntBuffer readIntBuffer = outputBuf3.asIntBuffer();
 				int[] readData = new int[readIntBuffer.capacity()];
 				readIntBuffer.get(readData);
+				
 				MapView.set_startPos(readData[0], readData[1]);
+	
+				
 				buf.clear();
 
 			}
@@ -61,6 +65,14 @@ public class Client {
 		Thread push_locate = new Thread(new push_locate(socket2));
 		push_locate.start();
 		
+	}
+	
+	public String getpp() {
+		return pp;
+	}
+
+	public void setpp(String p) {
+		this.pp=p;
 	}
 
 }
@@ -120,7 +132,7 @@ class push_locate implements Runnable {
 	public void run() {
 		int[] point_lo;
 		// 키보드 입력받을 채널과 저장할 버퍼 생성
-		// ReadableByteChannel in = Channels.newChannel(System.in);
+		 ReadableByteChannel in = Channels.newChannel(System.in);
 		IntBuffer intbuf;
 		ByteBuffer bytebuf;
 
@@ -143,11 +155,14 @@ class push_locate implements Runnable {
 					e.printStackTrace();
 				}
 				*/
+				if(this.socket!=null)
 				socket.write(bytebuf); // 입력한 내용을 서버로 출력
 				bytebuf.clear();
 			//}
 
 		} catch (IOException e) {
+			Client c = new Client();
+			c.setpp("전송불가");
 			System.out.println("전송불가.");
 		}
 	}

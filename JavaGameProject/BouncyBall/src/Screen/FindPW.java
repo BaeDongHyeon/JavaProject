@@ -32,7 +32,7 @@ public class FindPW extends JPanel implements ActionListener, KeyListener {
 	private String[] lbl_name = {"아이디 확인 : ", "질문 확인", "답변 확인 : ", "비밀번호(5자 이상, 10자 이하), 영어 숫자 조합) 사용 가능 : ", "비밀번호 일치 : "};
 	private String[] btn_name = {"아이디 확인", "질문 확인", "Reset", "Go Login"};
 	private JComboBox question_box2 = new JComboBox(question_list);
-	private boolean[] f_check = {false, true, false, false, false, false};
+	private boolean[] f_check = {false, false, false, false};
 	private JLabel[] l = new JLabel[LBL_SIZE];
 	private Login loginF;	
 	
@@ -82,13 +82,14 @@ public class FindPW extends JPanel implements ActionListener, KeyListener {
 		t[1].enableInputMethods(true);
 		t[2].addKeyListener(this);
 		t[3].addKeyListener(this);
+		question_box2.addActionListener(this);
 		
-		for (int i=0; i<LBL_SIZE; i++) {
-			if (i == 1) l[i] = new JLabel(lbl_name[i]);
-			else l[i] = new JLabel(lbl_name[i] + f_check[i]);
-			forgot_p3.add(l[i]);
-		}
-		
+		for (int i=0; i<LBL_SIZE; i++) {                           //1205오류수정: 원래 87열이 없고, 89열의 i-1이 아닌 i였으나 f_check[]길이를 줄이면서 길이가 안맞는 관계로 수정함.
+	         if (i == 0) l[i] = new JLabel(lbl_name[i] + f_check[i]);      //1205오류수정: 128열에서 오류가 떠서 f_check[]길이를 줄이면서 lbl_size랑 길이가 안 맞아지게되어 추가함.
+	         else if (i == 1) l[i] = new JLabel(lbl_name[i]);
+	         else l[i] = new JLabel(lbl_name[i] + f_check[i-1]);            //1205오류수정: 위와 같은 이유로 수정. f_check[]길이 줄어들면서 -1을 해줬음.
+	         forgot_p3.add(l[i]);
+	      }
 		add(forgot_p1); add(forgot_p2); add(forgot_p3);
 	}
 
@@ -133,9 +134,13 @@ public class FindPW extends JPanel implements ActionListener, KeyListener {
 			}
 			
 			db.PasswordUpdate(t[0].getTextF(), t[2].getTextF());
-			loginF.pageChange(new FindPW(db, loginF), loginF.login_all);
+			loginF.pageChange(this, loginF.login_all);
+			FormReset();
 		} else if (e.getSource() == btn[3]) {	// Go Login
 			loginF.pageChange(this, loginF.login_all);
+		} else if (e.getSource() == question_box2) {
+			f_check[1] = false;
+			l[2].setText(lbl_name[2] + f_check[1]);
 		}
 	}
 	
@@ -157,5 +162,18 @@ public class FindPW extends JPanel implements ActionListener, KeyListener {
 			
 			l[4].setText(lbl_name[4] + f_check[3]);
 		}
+	}
+	private void FormReset() {
+		for (int i=0; i<TXT_SIZE; i++) {
+			t[i].setText(" " + t[i].getName());
+			t[i].setEchoChar((char) 0);
+		}
+		for (int i=0; i<LBL_SIZE; i++) {
+			if (i!=LBL_SIZE-1) f_check[i] = false;
+			if (i == 0) l[i].setText(lbl_name[i] + f_check[i]);
+			else if (i == 1) l[i].setText(lbl_name[i]);
+			else l[i].setText(lbl_name[i] + f_check[i-1]);
+		}
+		question_box2.setSelectedIndex(0);
 	}
 }

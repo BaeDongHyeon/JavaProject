@@ -79,6 +79,7 @@ public class SignUp extends JPanel implements ActionListener, KeyListener {
 		}
 		t[2].addKeyListener(this);
 		t[3].addKeyListener(this);
+		t[4].addKeyListener(this);
 		t[4].enableInputMethods(true);
 		
 		for (int i=0; i<LBL_SIZE; i++) {
@@ -114,7 +115,8 @@ public class SignUp extends JPanel implements ActionListener, KeyListener {
 			}
 			
 			db.SignUp(t[1].getTextF(), t[2].getTextF(), t[0].getTextF(), question_box1.getSelectedItem().toString(), t[4].getTextF());
-			loginF.pageChange(new SignUp(db, loginF), loginF.login_all);
+			loginF.pageChange(this, loginF.login_all);
+			FormReset();
 		} else if (e.getSource() == btn[3]) {	// Go Login
 			loginF.pageChange(this, loginF.login_all);
 		}
@@ -137,6 +139,31 @@ public class SignUp extends JPanel implements ActionListener, KeyListener {
 				l_check[3] = false;
 			
 			l[3].setText(lbl_name[3] + l_check[3]);
+		} else if(e.getSource()==t[4]) {  
+	         if(t[4].getPassword().length>0) {
+	             l_check[5]=true;
+	             l[5].setText(lbl_name[5] + l_check[5]);
+	          }
+	          else {
+	             l_check[5]=false;
+	             l[5].setText(lbl_name[5] + l_check[5]);
+	          }
+	       }
+	}
+	
+	private void FormReset() {
+		for (int i=0; i<LBL_SIZE; i++) {
+			if (i==4) {
+				l_check[i] = true;
+			} else {
+				l_check[i] = false;
+				l[i].setText(lbl_name[i] + l_check[i]);	
+			}								
 		}
+		for (int i=0; i<TXT_SIZE; i++) {
+			t[i].setText(" " + txt_name[i]);
+			t[i].setEchoChar((char) 0);
+		}
+		question_box1.setSelectedIndex(0);
 	}
 }

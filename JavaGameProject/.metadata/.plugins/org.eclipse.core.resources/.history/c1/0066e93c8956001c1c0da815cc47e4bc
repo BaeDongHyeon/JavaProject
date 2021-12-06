@@ -1,0 +1,64 @@
+package Server;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class Server {
+	ServerSocket server = null;
+	Socket sock;
+
+	public static void main(String args[]) {
+		new Server();
+	}
+
+	public Server() {
+		try {
+			server = new ServerSocket(9200);
+			System.out.println("서버 오픈");
+
+			sock = server.accept();
+			Thread s = new Thread(new send());
+			Thread r = new Thread(new receive());
+			s.start();
+			r.start();
+		} catch (Exception e) {
+			System.out.println("서버 열기 실패");
+		}
+	}
+
+	class send implements Runnable {
+		public void run() {
+			try {
+				while (true) {
+					String data = null;
+					Scanner str = new Scanner(System.in);
+					data = str.nextLine();
+					OutputStream out = sock.getOutputStream();
+					out.write(data.getBytes());
+					System.out.println("보냄 : " + data);
+				}
+			} catch (Exception e) {
+				System.out.print("클라이언트와 연결이 끊어짐");
+			}
+		}
+	}
+
+	class receive implements Runnable {
+		public void run() {
+			try {
+				while (true) {
+					InputStream in = sock.getInputStream();
+					byte[] data = new byte[1024];
+					in.read(data);
+					System.out.println("받음 : " + new String(data));
+				}
+			} catch (IOException e) {
+				System.out.println("클라이언트와 연결이 끊어짐");
+			}
+		}
+	}
+}

@@ -5,4 +5,6 @@
     <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
     <fullyQualifiedTypeName name="Utils.MyTextField"/>
     <fullyQualifiedTypeName name="java.awt.event.KeyListener"/>
+    <fullyQualifiedTypeName name="Maps.MapView.check_onlyp2"/>
+    <fullyQualifiedTypeName name="Maps.MapView.JumpProcess"/>
 </qualifiedTypeNameHistroy>

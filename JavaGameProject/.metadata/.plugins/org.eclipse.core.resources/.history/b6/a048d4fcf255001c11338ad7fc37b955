@@ -1,0 +1,65 @@
+package Client;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.Scanner;
+
+
+public class Client {
+	Socket sock;
+	
+	public static void main(String[] args) {
+		new Client();
+	}
+	public Client() {
+		try {
+			sock = new Socket("127.0.0.1", 9200);
+			System.out.println("서버 연결 완료");
+			
+			Thread s=new Thread(new send());
+			Thread r=new Thread(new receive());
+			s.start();
+			r.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	class send implements Runnable {
+		private String data = null;
+		public send(String data) {
+			this.data = data;
+		}
+		public void run() {
+			try {
+				while (true) {
+//					String data = null;
+//					Scanner str = new Scanner(System.in);
+//					data = str.nextLine();
+					OutputStream out = sock.getOutputStream();
+					out.write(data.getBytes());
+//					System.out.println("보냄 : " + data);
+				}
+			} catch (Exception e) {
+				System.out.println("서버와 연결이 끊어짐");
+			}
+		}
+		public void setData(String s) {
+			data = s;
+		}
+	}
+	class receive implements Runnable {
+		public void run() {
+			try {
+				while (true) {
+					InputStream in = sock.getInputStream();
+					byte[] data = new byte[1024];
+					in.read(data);
+					System.out.println("받음 : " + new String(data));
+				}
+			} catch (IOException e) {
+				System.out.println("서버와 연결이 끊어짐");
+			}
+		}
+	}
+}

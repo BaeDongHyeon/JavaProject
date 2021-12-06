@@ -6,7 +6,7 @@ import Utils.MyImage;
 public class BlockAndBall extends JLabel {	
 	private String[][] imageName = {{"없음", "default_block", "iron_block", "thorn_block", "iteamDash_block", "jump_block", "Left_block", "electricity_block",
 		"Rightdiagonal_block", "jump", "going", "BlackPortal_block", "WhitePortal_block", "Warp_block", "move_block", "ChangeColor_block",
-		 "Star", "StarRainbow"}, {"blue_circle","blue_square","red_circle","red_square"}};
+		 "Star", "StarRainbow", "switch_On", "switch_Off"}, {"blue_circle","blue_square","red_circle","red_square"}};
 	private int floor = 0;						// 몇 층에 배치하는지 표현할 인덱스
 	private int x = 0;							// x좌표의 인덱스 저장
 	public int posX, posY;
